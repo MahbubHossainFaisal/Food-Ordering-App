@@ -1,11 +1,15 @@
 import React from 'react'
 import Header from './components/Layouts/Header'
+import Meals from './components/Meals/Meals'
 
 function App() {
   return (
-    <div>
+    <React.Fragment>
      <Header />
-    </div>
+     <main>
+        <Meals />
+     </main>
+    </React.Fragment>
   );
 }
 
