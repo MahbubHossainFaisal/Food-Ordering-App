@@ -1,10 +1,12 @@
 import React from 'react'
+import Card from '../UI/Card'
+import MealItem from './MealIteam/MealItem'
 import classes from './AvailableMeals.module.css'
 
 const DUMMY_MEALS = [
     {
         id: 'm1',
-        name: 'Indian Dum Biriyani',
+        name: 'Hydrabadi Dum Biriyani',
         description: 'Finest chicken with Biriyani',
         price: 250,
     },
@@ -32,11 +34,22 @@ const DUMMY_MEALS = [
 
 
 const AvailableMeals = () => {
-    const mealsList = DUMMY_MEALS.map(meal => <li>{meal.name}</li>)
+    const mealsList = DUMMY_MEALS.map((meal) => 
+    (<MealItem 
+    key={meal.id} 
+    name={meal.name} 
+    description={meal.description}
+    price={meal.price}
+     />))
     return (
-        <ul className={classes.meals}>
-         {mealsList}   
-        </ul>
+       <section className={classes.meals}>
+            <Card>
+                <ul>
+                    {mealsList}
+                </ul>
+            </Card>
+       </section>
+        
     )
 }
 
