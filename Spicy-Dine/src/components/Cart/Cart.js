@@ -6,16 +6,18 @@ import classes from './Cart.module.css'
 
 const Cart = (props) => {
     const cartCtx = useContext(CartContext)
+    
 
     const cartItemRemoveHandler = (id) =>{
-
+        cartCtx.removeItem(id)
     }
     const cartAddItemHandler=(item) =>{
-
+        cartCtx.addItem({...item, amount:1})
     }
-
     const totalAmount = `${cartCtx.totalAmount} BDT.`
-    const hasItem = cartCtx.items.length > 0
+    const hasItem = cartCtx.items.length > 0;
+
+   
     const cartItems = <ul className={classes['cart-items']}>
         {cartCtx.items.map((item) => (
             <CartItem 
@@ -23,7 +25,7 @@ const Cart = (props) => {
             name={item.name}
             amount={item.amount}
             price={item.price}
-            onRemove={cartItemRemoveHandler.bind(null, item.id)}
+            onRemove={cartItemRemoveHandler.bind(null,item.id)}
             onAdd ={cartAddItemHandler.bind(null, item)}
              />
         ))}
