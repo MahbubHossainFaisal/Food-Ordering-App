@@ -1,57 +1,54 @@
-import React from 'react'
+import React, {useEffect,useState} from 'react'
 import Card from '../UI/Card'
-import MealItem from './MealIteam/MealItem'
+import MealItem from './MealItem/MealItem';
 import classes from './AvailableMeals.module.css'
-
-const DUMMY_MEALS = [
-    {
-        id: 'm1',
-        name: 'Hydrabadi Dum Biriyani',
-        description: 'Finest chicken with Biriyani',
-        price: 250,
-    },
-    {
-        id: 'm2',
-        name: 'Spicy Platter',
-        description: 'A german specialty! Spicy chicken with fried rice with german veggi',
-        price: 320,
-    },
-    {
-        id: 'm3',
-        name: 'Barbecue Burger',
-        description: 'American, raw, meaty',
-        price: 280,
-    },
-    {
-        id: 'm4',
-        name: 'Rice Bowl',
-        description: 'Healthy...and green...and spicy',
-        price: 185,
-    },
-];
-
 
 
 
 const AvailableMeals = () => {
-    const mealsList = DUMMY_MEALS.map((meal) => 
-    (<MealItem 
-    key={meal.id} 
-    id={meal.id}
-    name={meal.name} 
-    description={meal.description}
-    price={meal.price}
-     />))
+
+    const [meals, setMeals] = useState([])
+
+    useEffect(()=>{
+        const fetchMeals = async () =>{
+            const response = await fetch('https://meals-4e5a1-default-rtdb.firebaseio.com/meals.json')
+            const responseData = await response.json()
+
+            const loadMeals = []
+
+            for(const key in responseData){
+                loadMeals.push({
+                    id: key,
+                    name: responseData[key].name,
+                    description: responseData[key].description,
+                    price: responseData[key].price
+                })
+            }
+            setMeals(loadMeals)
+        }
+
+        fetchMeals()
+    },[])
+
+    const mealItems = meals.map((meal) => (
+        <MealItem
+            key={meal.id}
+            id={meal.id}
+            name={meal.name}
+            description={meal.description}
+            price={meal.price}
+        />
+    ))
     return (
-       <section className={classes.meals}>
+        <section className={classes.meals}>
             <Card>
                 <ul>
-                    {mealsList}
+                    {mealItems}
                 </ul>
             </Card>
-       </section>
-        
+        </section>
     )
 }
 
 export default AvailableMeals
+
