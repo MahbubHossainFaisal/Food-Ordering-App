@@ -8,10 +8,15 @@ import classes from './AvailableMeals.module.css'
 const AvailableMeals = () => {
 
     const [meals, setMeals] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [httpError,setHttpError] = useState()
 
     useEffect(()=>{
         const fetchMeals = async () =>{
-            const response = await fetch('https://meals-4e5a1-default-rtdb.firebaseio.com/meals.json')
+            const response = await fetch('https://meals-4e5a1-default-rtdb.firebaseio.com/meals')
+            if(!response.ok){
+                throw new Error('Something went wrong!')
+            }
             const responseData = await response.json()
 
             const loadMeals = []
@@ -25,10 +30,30 @@ const AvailableMeals = () => {
                 })
             }
             setMeals(loadMeals)
+            setIsLoading(false)
         }
 
-        fetchMeals()
+        fetchMeals().catch((error) =>{
+            setIsLoading(false)
+            setHttpError(error.message)
+        })
     },[])
+
+    if(isLoading){
+        return(
+            <section className={classes.mealsLoading}>
+               <p>Loading...</p>
+            </section>
+        )
+    }
+
+    if (httpError) {
+        return (
+            <section style={{ textAlign:'center', color: 'red' }}>
+                <p>{httpError}</p>
+            </section>
+        )
+    }
 
     const mealItems = meals.map((meal) => (
         <MealItem
