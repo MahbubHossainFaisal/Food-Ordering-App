@@ -28,7 +28,7 @@ const Checkout = (props) => {
         const enteredCity = cityInputRef.current.value
 
         const enteredNameIsValid = !isEmpty(enteredName)
-        const enteredStreetIsValid = !isEmpty(enteredCity)
+        const enteredStreetIsValid = !isEmpty(enteredStreet)
         const enteredCityIsValid = !isEmpty(enteredCity)
         const enteredPostalCodeIsValid = isFiveChars(enteredPostalCode)
 
@@ -37,6 +37,15 @@ const Checkout = (props) => {
             street: enteredStreetIsValid,
             postalCode: enteredPostalCodeIsValid,
             city: enteredCityIsValid
+        })
+
+
+        //sending form data to Cart.js
+        props.onConfirm({
+            name: enteredName,
+            street: enteredStreet,
+            postalCode: enteredPostalCode,
+            city: enteredCity
         })
 
     };
